@@ -1,0 +1,77 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key]
+  
+  firstName varchar
+  lastName varchar
+
+  dateBirth date
+  state varchar
+  country varchar
+  active Boolean
+
+  email varchar
+  password varchar
+  
+  created_at timestamp 
+  updated_at timestamp 
+}
+
+Table authors {
+  id integer [primary key]
+  
+  name varchar
+  description varchar
+  year varchar
+  photo varchar
+  
+  created_at timestamp 
+  updated_at timestamp 
+}
+
+
+
+Table editor {
+  id integer [primary key]
+  
+  name varchar
+  description varchar
+  year varchar
+  photo varchar
+  
+  created_at timestamp 
+  updated_at timestamp 
+}
+Table category {
+  id            integer [primary key]
+  name          varchar
+  description   varchar
+
+  created_at timestamp 
+  updated_at timestamp 
+}
+
+
+Table comics {
+  id integer [primary key]
+  title varchar
+
+  description text
+
+  status varchar
+
+  created_at timestamp 
+  updated_at timestamp 
+}
+
+Table episode {
+  id integer [primary key]
+  title varchar
+
+  description text
+
+  status varchar
+  created_at timestamp
+}

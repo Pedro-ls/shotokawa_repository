@@ -1,0 +1,17 @@
+{
+	// Place your frontend workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	"React JSX IF": {
+		"scope": "javascriptreact",
+		"prefix": "rif",
+		"body": [
+			"{",
+			"($1)",
+			"? // if",
+			"$2",
+			": // else",
+			"$3",
+			"}"
+		],
+		"description": "create condiccional IF ReactComponent"
+	}
+}
