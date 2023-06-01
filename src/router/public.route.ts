@@ -7,5 +7,6 @@ const routesPublic = Router()
 // rotas publicas
 
 routesPublic.post("/users", uploadFile("users").single("photo"), UserView.store)
+routesPublic.post("/login", UserView.login)
 
 export default routesPublic

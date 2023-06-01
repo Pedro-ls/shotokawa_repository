@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { UserModel, IUser } from "../../../database/schemas/User.model";
 import { CategoryModel, ICategory } from "../../../database/schemas/Category.model";
-
+import bcript from 'bcryptjs'
+import jwt from "jsonwebtoken";
+import constants from "../../../constants";
 class UserView {
 
     async store(req: Request, res: Response) {
@@ -10,11 +12,12 @@ class UserView {
 
         const profile = req.file?.filename
         console.log(userBody)
+        
         // cria documento
         const user = new UserModel({
             name: userBody.name,
             email: userBody.email,
-            password: userBody.password,
+            password: await bcript.hash(String(userBody.password), 8),
             categoriesLike:String(userBody.categoriesLike).split(",").map(value => value.trim()), // retorna um array com os valores
             photo: profile
         })
@@ -26,6 +29,38 @@ class UserView {
             user,
             message: "Usuario criado com sucesso"
         })
+    }
+
+    async login(req:Request, res:Response){
+        const { email, password } = req.body;
+
+        const user = await UserModel.findOne({
+            email
+        })
+        if(user){
+            if(await bcript.compare(password, String(user.password))){
+                const expiresIn = "1d" 
+                const payload = {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    photo: user.photo   
+                }
+                const token = jwt.sign(payload, constants.JWT_KEY_SECRET, {
+                    expiresIn 
+                })
+
+                res.json({
+                    token,
+                    user: payload,
+                    expiresIn,
+                    message: "Logado com sucesso"
+                })
+            }
+        }
+    }
+    async getProfile(req:Request, res:Response){
+        res.json(req.body.user_auth)
     }
 
     async get(req: Request, res: Response) {
@@ -92,6 +127,10 @@ class UserView {
     async update(req: Request, res: Response){
     // recebe dados
     const userBody: IUser = req.body;
+
+    if(userBody.password){
+        userBody.password = await bcript.hash(String(userBody.password), 8)
+    }
     const { id } = req.params;
     // acha  e atualiza usuario
     const user = await UserModel.findByIdAndUpdate(id, userBody)

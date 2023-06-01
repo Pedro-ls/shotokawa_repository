@@ -76,6 +76,8 @@ routesPrivate.delete("/editors/:id", EditorView.delete)
 // All like categories user talll.... :id
 routesPrivate.get("/users/:id/categories", UsersView.getCategories)
 
+routesPrivate.post("/profile", UsersView.getProfile)
+
 
 
 export default routesPrivate
